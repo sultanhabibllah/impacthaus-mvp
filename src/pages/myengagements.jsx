@@ -82,6 +82,10 @@ export default function MyEngagements() {
     return <p className="page">Loading...</p>
   }
 
+  if (profile.role === 'admin') {
+    return <p className="page">Engagements aren't part of the admin role.</p>
+  }
+
   if (loading) {
     return <p className="page">Loading engagements...</p>
   }

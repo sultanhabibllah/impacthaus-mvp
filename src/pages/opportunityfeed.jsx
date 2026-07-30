@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../supabaseclient'
+import { useAuth } from '../context/authcontext'
 import OpportunityCard from '../components/opportunitycard'
 
 export default function OpportunityFeed() {
+  const { profile } = useAuth()
   const [opportunities, setOpportunities] = useState([])
   const [causeAreas, setCauseAreas] = useState([])
   const [applicantCounts, setApplicantCounts] = useState({})
@@ -94,6 +96,10 @@ export default function OpportunityFeed() {
 
     return matchesLocation && matchesSkill && matchesCauseArea
   })
+
+  if (profile?.role === 'admin') {
+    return <p className="page">Opportunity browsing isn't part of the admin role.</p>
+  }
 
   if (loading) {
     return <p className="page">Loading opportunities...</p>

@@ -1,4 +1,4 @@
-import { Routes, Route, useLocation, Link } from 'react-router-dom'
+import { Routes, Route, useLocation, Link, Navigate } from 'react-router-dom'
 import { useAuth } from './context/authcontext'
 import Navbar from './components/navbar'
 import SignUp from './pages/signup'
@@ -69,7 +69,18 @@ function App() {
         <Route path="/portfolio/:slug" element={<PublicPortfolio />} />
         <Route path="/volunteers/:id" element={<VolunteerProfile />} />
         <Route path="/admin" element={<AdminDashboard />} />
-        <Route path="/" element={user ? <Home /> : <LoggedOutLanding />} />
+        <Route
+          path="/"
+          element={
+            !user ? (
+              <LoggedOutLanding />
+            ) : profile?.role === 'admin' ? (
+              <Navigate to="/admin" replace />
+            ) : (
+              <Home />
+            )
+          }
+        />
       </Routes>
     </>
   )

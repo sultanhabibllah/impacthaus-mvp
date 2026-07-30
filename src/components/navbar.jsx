@@ -15,6 +15,8 @@ export default function Navbar() {
     ? profile.full_name.split(' ').map((n) => n[0]).slice(0, 2).join('').toUpperCase()
     : '?'
 
+  const isAdmin = profile?.role === 'admin'
+
   return (
     <nav className="navbar">
       <NavLink to="/" className="navbar-brand" end>ImpactHaus</NavLink>
@@ -22,8 +24,12 @@ export default function Navbar() {
       <div className="navbar-links">
         {user ? (
           <>
-            <NavLink to="/opportunities">Opportunities</NavLink>
-            <NavLink to="/engagements">Engagements</NavLink>
+            {!isAdmin && (
+              <>
+                <NavLink to="/opportunities">Opportunities</NavLink>
+                <NavLink to="/engagements">Engagements</NavLink>
+              </>
+            )}
             {profile?.role === 'volunteer' && (
               <NavLink to="/my-portfolio">My Portfolio</NavLink>
             )}
@@ -33,10 +39,10 @@ export default function Navbar() {
                 <NavLink to="/applications">Applications</NavLink>
               </>
             )}
-            {profile?.role === 'admin' && (
-              <NavLink to="/admin">Admin</NavLink>
+            {isAdmin && (
+              <NavLink to="/admin">NGO Verification</NavLink>
             )}
-            <NavLink to="/edit-profile">Edit profile</NavLink>
+            {!isAdmin && <NavLink to="/edit-profile">Edit profile</NavLink>}
 
             <div className="navbar-user-group">
               {profile?.avatar_url ? (
