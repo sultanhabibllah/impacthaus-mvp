@@ -3,6 +3,7 @@
 ImpactHaus is a skill-based volunteering platform connecting skilled young Africans (18-35) with NGOs and grassroots organizations across Africa. Volunteers discover opportunities matched to their skills, apply, and complete engagements that automatically build a verified, shareable impact portfolio, turning informal volunteer work into a professional, credentialed experience.
 
 **Live demo:** https://impacthaus-mvp.vercel.app
+**Video demo:** https://youtu.be/sL5S1Y1ZVM0
 
 ## Features
 
