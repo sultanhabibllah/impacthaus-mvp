@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { useAuth } from '../context/authcontext'
 import { supabase } from '../supabaseclient'
 
@@ -52,6 +53,7 @@ export default function ReviewApplications() {
         status,
         created_at,
         opportunity_id,
+        volunteer_id,
         opportunities ( title ),
         profiles (
           full_name,
@@ -147,25 +149,23 @@ export default function ReviewApplications() {
               <span className="opp-posted">{timeAgo(app.created_at)}</span>
             </div>
 
-            <div className="mini-avatar-row">
-              {app.profiles?.avatar_url ? (
-                <img src={app.profiles.avatar_url} alt="" className="mini-avatar" />
-              ) : (
-                <div className="mini-avatar-placeholder">{initials}</div>
-              )}
-              <div>
-                <span className="mini-avatar-name">{app.profiles?.full_name}</span>
-                <span className="mini-avatar-sub">
-                  {app.profiles?.volunteer_details?.location} · {app.profiles?.email}
-                </span>
+            <Link to={`/volunteers/${app.volunteer_id}`} style={{ textDecoration: 'none' }}>
+              <div className="mini-avatar-row">
+                {app.profiles?.avatar_url ? (
+                  <img src={app.profiles.avatar_url} alt="" className="mini-avatar" />
+                ) : (
+                  <div className="mini-avatar-placeholder">{initials}</div>
+                )}
+                <div>
+                  <span className="mini-avatar-name" style={{ textDecoration: 'underline' }}>
+                    {app.profiles?.full_name}
+                  </span>
+                  <span className="mini-avatar-sub">
+                    {app.profiles?.volunteer_details?.location} · {app.profiles?.email}
+                  </span>
+                </div>
               </div>
-            </div>
-
-            {app.profiles?.volunteer_details?.bio && (
-              <p style={{ color: 'var(--color-text-muted)', fontSize: '0.9rem' }}>
-                {app.profiles.volunteer_details.bio}
-              </p>
-            )}
+            </Link>
 
             {app.profiles?.volunteer_skills?.length > 0 && (
               <div className="opp-tags-row">
