@@ -19,6 +19,7 @@ export default function OpportunityDetail() {
   const { user, profile } = useAuth()
 
   const [opportunity, setOpportunity] = useState(null)
+  const [ngoEmail, setNgoEmail] = useState('')
   const [applicantCount, setApplicantCount] = useState(0)
   const [ngoPostCount, setNgoPostCount] = useState(0)
   const [message, setMessage] = useState('')
@@ -47,7 +48,7 @@ export default function OpportunityDetail() {
         ngo_id,
         status,
         created_at,
-        ngo_details ( org_name, sector, country, description ),
+        ngo_details ( org_name, sector, country, description, verified ),
         cause_areas ( name ),
         opportunity_skills ( skills ( name ) )
         `
@@ -69,6 +70,13 @@ export default function OpportunityDetail() {
         .select('*', { count: 'exact', head: true })
         .eq('ngo_id', data.ngo_id)
       setNgoPostCount(postCount || 0)
+
+      const { data: ngoProfile } = await supabase
+        .from('profiles')
+        .select('email')
+        .eq('id', data.ngo_id)
+        .single()
+      setNgoEmail(ngoProfile?.email || '')
     }
 
     if (user) {
@@ -117,6 +125,7 @@ export default function OpportunityDetail() {
   }
 
   const isOwner = user && opportunity.ngo_id === user.id
+  const isVerified = opportunity.ngo_details?.verified
 
   return (
     <div className="page">
@@ -149,7 +158,10 @@ export default function OpportunityDetail() {
         </div>
 
         <div className="opp-footer">
-          <span className="opp-footer-item verified-badge">{opportunity.ngo_details?.org_name}</span>
+          <span className={`opp-footer-item ${isVerified ? 'verified-badge' : ''}`}>
+            {opportunity.ngo_details?.org_name}
+            {!isVerified && ' (unverified)'}
+          </span>
           <span className="opp-footer-item">{opportunity.ngo_details?.country}</span>
           <span className="opp-footer-item">
             {ngoPostCount} opportunit{ngoPostCount === 1 ? 'y' : 'ies'} posted
@@ -169,6 +181,11 @@ export default function OpportunityDetail() {
           {opportunity.ngo_details?.sector} · {opportunity.ngo_details?.country}
         </p>
         <p>{opportunity.ngo_details?.description}</p>
+        {ngoEmail && (
+          <p style={{ marginTop: '0.75rem' }}>
+            Contact: <a href={`mailto:${ngoEmail}`}>{ngoEmail}</a>
+          </p>
+        )}
       </div>
 
       {profile?.role === 'volunteer' && (

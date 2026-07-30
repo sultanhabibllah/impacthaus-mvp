@@ -18,6 +18,7 @@ import MyEngagements from './pages/myengagements'
 import MyPortfolio from './pages/myportfolio'
 import PublicPortfolio from './pages/publicportfolio'
 import VolunteerProfile from './pages/volunteerprofile'
+import AdminDashboard from './pages/admindashboard'
 
 const noNavRoutes = ['/login', '/signup', '/reset-password', '/update-password']
 
@@ -67,6 +68,7 @@ function App() {
         <Route path="/my-portfolio" element={<MyPortfolio />} />
         <Route path="/portfolio/:slug" element={<PublicPortfolio />} />
         <Route path="/volunteers/:id" element={<VolunteerProfile />} />
+        <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/" element={user ? <Home /> : <LoggedOutLanding />} />
       </Routes>
     </>

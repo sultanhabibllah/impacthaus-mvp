@@ -33,6 +33,9 @@ export default function Navbar() {
                 <NavLink to="/applications">Applications</NavLink>
               </>
             )}
+            {profile?.role === 'admin' && (
+              <NavLink to="/admin">Admin</NavLink>
+            )}
             <NavLink to="/edit-profile">Edit profile</NavLink>
 
             <div className="navbar-user-group">

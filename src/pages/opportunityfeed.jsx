@@ -37,7 +37,7 @@ export default function OpportunityFeed() {
         cause_area_id,
         created_at,
         ngo_id,
-        ngo_details ( org_name, country ),
+        ngo_details ( org_name, country, verified ),
         cause_areas ( name ),
         opportunity_skills ( skills ( name ) )
         `

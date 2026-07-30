@@ -23,6 +23,8 @@ export default function OpportunityCard({ opportunity, applicantCount, ngoPostCo
       ? opportunity.description
       : opportunity.description.slice(0, DESCRIPTION_LIMIT).trim() + '…'
 
+  const isVerified = opportunity.ngo_details?.verified
+
   return (
     <div className="card">
       <div className="opp-card-header">
@@ -57,7 +59,10 @@ export default function OpportunityCard({ opportunity, applicantCount, ngoPostCo
       )}
 
       <div className="opp-footer">
-        <span className="opp-footer-item verified-badge">{opportunity.ngo_details?.org_name}</span>
+        <span className={`opp-footer-item ${isVerified ? 'verified-badge' : ''}`}>
+          {opportunity.ngo_details?.org_name}
+          {!isVerified && ' (unverified)'}
+        </span>
         {opportunity.ngo_details?.country && (
           <span className="opp-footer-item">{opportunity.ngo_details.country}</span>
         )}
