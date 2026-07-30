@@ -8,13 +8,14 @@ ImpactHaus is a skill-based volunteering platform connecting skilled young Afric
 
 - Volunteer and NGO registration with role-specific profiles
 - Email/password and Google OAuth login, password reset
-- Skill-based volunteer profiling with proficiency levels
+- Skill-based volunteer profiling with proficiency levels and cause-area interests
 - NGO opportunity posting, editing, and closing
 - Opportunity feed with filtering by cause area, location, and skill
-- Application submission and NGO review (accept/decline)
+- Application submission and NGO review (accept/decline), including a full view of the applicant's skills and bio
 - Engagement tracking (active, completed, cancelled)
 - Auto-generated impact portfolio with a public shareable link and PDF export
 - Profile photo upload
+- Admin role for NGO verification, with a verified badge shown across the platform
 
 ## Tech stack
 
@@ -64,16 +65,24 @@ In your Supabase project, go to **SQL Editor → New query**, and run each of th
 6. `ngo_relationship_fix.sql` — adds a required foreign key relationship
 7. `portfolio_view.sql` — creates the view that powers the impact portfolio
 8. `allow_null_role.sql` — allows Google sign-ups to select a role after registration
+9. `admin_verification.sql` — adds NGO verification support for the admin role
 
-### 5. Create a Storage bucket
+### 5. Create an admin account
+
+The admin role cannot self-register through the signup form (by design, per the SRS). To create one:
+
+1. Sign up normally through the app with any email
+2. In Supabase's SQL Editor, run `database/promote_to_admin.sql`, with the email inside that file changed to match the account from step 1
+
+### 6. Create a Storage bucket
 
 In Supabase, go to **Storage → New bucket**, name it `avatars`, and toggle it **Public**.
 
-### 6. Set up Google OAuth (optional)
+### 7. Set up Google OAuth (optional)
 
 If you want Google sign-in to work, follow Supabase's [Google Auth guide](https://supabase.com/docs/guides/auth/social-login/auth-google) to configure a Google Cloud OAuth client, then add the Client ID and Secret under **Authentication → Sign In / Providers → Google** in your Supabase dashboard.
 
-### 7. Configure environment variables
+### 8. Configure environment variables
 
 Create a `.env` file in the project root:
 
@@ -82,7 +91,7 @@ VITE_SUPABASE_URL=your_supabase_project_url
 VITE_SUPABASE_ANON_KEY=your_supabase_publishable_key
 ```
 
-### 8. Run the app locally
+### 9. Run the app locally
 
 ```
 npm run dev
@@ -100,6 +109,7 @@ If you'd like to explore the app without registering, these seeded accounts are 
 | Volunteer | samuel.volunteer@example.com |
 | NGO | green.rwanda@example.com |
 | NGO | techbridge.africa@example.com |
+| Admin | (created via `promote_to_admin.sql`, not seeded by default) |
 
 ## Project documentation
 
