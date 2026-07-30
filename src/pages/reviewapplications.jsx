@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
 import { useAuth } from '../context/authcontext'
 import { supabase } from '../supabaseclient'
 
@@ -54,7 +53,13 @@ export default function ReviewApplications() {
         created_at,
         opportunity_id,
         opportunities ( title ),
-        profiles ( full_name, email, avatar_url, volunteer_details ( location ) )
+        profiles (
+          full_name,
+          email,
+          avatar_url,
+          volunteer_details ( location, bio ),
+          volunteer_skills ( proficiency, skills ( name ) )
+        )
         `
       )
       .in('opportunity_id', opportunityIds)
@@ -155,6 +160,22 @@ export default function ReviewApplications() {
                 </span>
               </div>
             </div>
+
+            {app.profiles?.volunteer_details?.bio && (
+              <p style={{ color: 'var(--color-text-muted)', fontSize: '0.9rem' }}>
+                {app.profiles.volunteer_details.bio}
+              </p>
+            )}
+
+            {app.profiles?.volunteer_skills?.length > 0 && (
+              <div className="opp-tags-row">
+                {app.profiles.volunteer_skills.map((vs) => (
+                  <span key={vs.skills.name} className="tag tag-skill">
+                    {vs.skills.name} · {vs.proficiency}
+                  </span>
+                ))}
+              </div>
+            )}
 
             <p className="message-quote">"{app.message}"</p>
 
